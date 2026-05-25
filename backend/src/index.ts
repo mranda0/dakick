@@ -4,12 +4,16 @@ import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth.routes'
+import productRoutes from "./routes/product.routes"
+import categoryRoutes from "./routes/category.routes"
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 4000
 
+
+   
 // Middlewares de seguridad
 app.use(helmet())
 app.use(cors({
@@ -22,6 +26,8 @@ app.use(cookieParser())
 
 // Rutas
 app.use('/api/auth', authRoutes)
+app.use("/api/products", productRoutes)
+app.use("/api/categories", categoryRoutes)
 
 // Ruta de prueba
 app.get('/health', (req, res) => {
