@@ -33,7 +33,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <h3 className="font-medium text-gray-900 group-hover:text-black transition-colors line-clamp-1">
           {product.name}
         </h3>
-        <p className="text-gray-900 font-bold mt-1">${product.price}</p>
+        <p className="text-gray-900 font-bold mt-1">S/ {product.price}</p>
       </div>
     </Link>
   )
