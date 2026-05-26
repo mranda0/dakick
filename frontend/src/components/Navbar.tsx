@@ -6,10 +6,12 @@ import { useState } from "react"
 import { useAuthStore } from "@/store/auth.store"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
+import { useCartStore } from "@/store/cart.store"
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const { user, clearAuth } = useAuthStore()
+  const count = useCartStore((s) => s.count())
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-white text-black border-b border-black/10">
@@ -57,8 +59,13 @@ export default function Navbar() {
               <User size={20} className="hover:text-gray-300 transition-colors" />
             </Link>
           )}
-          <Link href="/cart">
-            <ShoppingBag size={20} className="hover:text-gray-300 transition-colors" />
+          <Link href="/cart" className="relative">
+            <ShoppingBag size={20} className="hover:text-gray-500 transition-colors" />
+            {count > 0 && (
+              <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                {count}
+              </span>
+            )}
           </Link>
           <button className="md:hidden" onClick={() => setOpen(!open)}>
             {open ? <X size={20} /> : <Menu size={20} />}

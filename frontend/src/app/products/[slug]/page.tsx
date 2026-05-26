@@ -7,6 +7,7 @@ import api from "@/lib/axios"
 import { ShoppingBag, ChevronLeft } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { useCartStore } from "@/store/cart.store"
 
 interface ProductSize {
   id: string
@@ -32,6 +33,21 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true)
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [activeImage, setActiveImage] = useState(0)
+  const addItem = useCartStore((s) => s.addItem)
+
+
+  const handleAddToCart = () => {
+  if (!product || !selectedSize) return
+  addItem({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    imageUrl: product.imageUrl,
+    size: selectedSize,
+    quantity: 1,
+    slug: product.slug,
+  })
+}
 
   // Genera las dos imágenes del producto
   const getImages = (imageUrl: string) => {
@@ -150,17 +166,18 @@ export default function ProductDetailPage() {
 
               {/* Botón agregar al carrito */}
               <button
+                onClick={handleAddToCart}
                 disabled={product.sizes.length > 0 && !selectedSize}
                 className={cn(
-                  "w-full py-4 font-black text-sm tracking-wide flex items-center justify-center gap-2 transition-colors",
-                  product.sizes.length > 0 && !selectedSize
+                    "w-full py-4 font-black text-sm tracking-wide flex items-center justify-center gap-2 transition-colors rounded-xl",
+                    product.sizes.length > 0 && !selectedSize
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                     : "bg-black text-white hover:bg-gray-900"
                 )}
-              >
+                >
                 <ShoppingBag size={18} />
                 {product.sizes.length > 0 && !selectedSize ? "SELECCIONA UNA TALLA" : "AGREGAR AL CARRITO"}
-              </button>
+                </button>
 
               {/* Stock */}
               <p className="text-xs text-gray-400 text-center mt-3">
