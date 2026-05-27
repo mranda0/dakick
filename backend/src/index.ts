@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.routes'
 import productRoutes from "./routes/product.routes"
 import categoryRoutes from "./routes/category.routes"
 import paymentRoutes from "./routes/payment.routes"
+import adminRoutes from "./routes/admin.routes"
 
 dotenv.config()
 
@@ -33,6 +34,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/products", productRoutes)
 app.use("/api/categories", categoryRoutes)
 app.use("/api/payments", paymentRoutes)
+app.use("/api/admin", adminRoutes)
 
 // Ruta de prueba
 app.get('/health', (req, res) => {
