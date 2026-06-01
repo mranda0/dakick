@@ -1,22 +1,21 @@
+import * as dotenv from "dotenv"
+import path from "path"
+dotenv.config({ path: path.resolve(__dirname, "../.env") })
+
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
-import dotenv from 'dotenv'
 import authRoutes from './routes/auth.routes'
 import productRoutes from "./routes/product.routes"
 import categoryRoutes from "./routes/category.routes"
 import paymentRoutes from "./routes/payment.routes"
 import adminRoutes from "./routes/admin.routes"
-
-dotenv.config()
+import uploadRoutes from "./routes/upload.routes"
 
 const app = express()
 const PORT = process.env.PORT || 4000
 
-
-   
-// Middlewares de seguridad
 app.use(helmet())
 app.use(cors({
   origin: process.env.CLIENT_URL,
@@ -26,17 +25,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-// Rutas
 app.use('/api/auth', authRoutes)
-app.use("/api/products", productRoutes)
-app.use("/api/categories", categoryRoutes)
-app.use("/api/auth", authRoutes)
 app.use("/api/products", productRoutes)
 app.use("/api/categories", categoryRoutes)
 app.use("/api/payments", paymentRoutes)
 app.use("/api/admin", adminRoutes)
+app.use("/api/upload", uploadRoutes)
 
-// Ruta de prueba
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Dakick API corriendo 🚀' })
 })
