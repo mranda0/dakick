@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import Navbar from "@/components/Navbar"
 import ProductCard from "@/components/ProductCard"
 import api from "@/lib/axios"
@@ -15,7 +15,7 @@ interface Product {
   category: { name: string }
 }
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams()
   const category = searchParams.get("category")
   const search = searchParams.get("search")
@@ -38,6 +38,7 @@ export default function ProductsPage() {
     api.get("/products", { params })
       .then((res) => setProducts(res.data.products))
       .finally(() => setLoading(false))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, search])
 
   return (
@@ -45,8 +46,6 @@ export default function ProductsPage() {
       <Navbar />
       <main className="min-h-screen bg-white pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4">
-
-          {/* Header */}
           <div className="mb-10">
             <h1 className="text-4xl font-black text-gray-900 mb-2">
               {search ? `Resultados: "${search}"` : "Todos los productos"}
@@ -54,7 +53,6 @@ export default function ProductsPage() {
             <p className="text-gray-500">{products.length} productos encontrados</p>
           </div>
 
-          {/* Filtros por categoría */}
           <div className="flex gap-3 mb-10 flex-wrap">
             <button
               onClick={() => setActiveCategory("")}
@@ -81,7 +79,6 @@ export default function ProductsPage() {
             ))}
           </div>
 
-          {/* Grid de productos */}
           {loading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
@@ -105,9 +102,20 @@ export default function ProductsPage() {
               ))}
             </div>
           )}
-
         </div>
       </main>
     </>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white pt-24 flex items-center justify-center">
+        <p className="text-gray-400">Cargando...</p>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   )
 }
