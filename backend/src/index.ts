@@ -18,7 +18,12 @@ const PORT = process.env.PORT || 4000
 
 app.use(helmet())
 app.use(cors({
-  origin: ["http://localhost:3000", "https://dakick.vercel.app"],
+  origin: [
+    "http://localhost:3000",
+    "https://dakick.vercel.app",
+    "https://dakick-6hj13win1-mirandaproject05.vercel.app",
+    /\.vercel\.app$/
+  ],
   credentials: true
 }))
 app.use(express.json())
