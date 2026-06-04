@@ -30,7 +30,7 @@ export const createCategory = async (req: Request, res: Response) => {
 
 export const deleteCategory = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
+    const { id } = req.params as { id: string }
     await prisma.category.delete({ where: { id } })
     res.json({ message: "Categoría eliminada" })
   } catch (error) {

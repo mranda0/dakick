@@ -45,7 +45,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const getProduct = async (req: Request, res: Response) => {
   try {
-    const { slug } = req.params
+    const { slug } = req.params as { slug: string }
 
     const product = await prisma.product.findUnique({
       where: { slug },
@@ -95,7 +95,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
+    const { id } = req.params as { id: string }
     const { name, description, price, imageUrl, stock, categoryId, isActive } = req.body
 
     const data: any = { description, price, imageUrl, stock, categoryId, isActive }
@@ -120,7 +120,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
+    const { id } = req.params as { id: string }
 
     await prisma.product.update({
       where: { id },

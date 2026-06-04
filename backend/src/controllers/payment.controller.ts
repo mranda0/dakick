@@ -79,7 +79,7 @@ export const handleWebhook = async (req: Request, res: Response) => {
   }
 
   if (event.type === "payment_intent.succeeded") {
-    const paymentIntent = event.data.object as Stripe.PaymentIntent
+    const paymentIntent = event.data.object as any
     const orderId = paymentIntent.metadata.orderId
 
     await prisma.order.update({
@@ -98,7 +98,7 @@ export const handleWebhook = async (req: Request, res: Response) => {
   }
 
   if (event.type === "payment_intent.payment_failed") {
-    const paymentIntent = event.data.object as Stripe.PaymentIntent
+    const paymentIntent = event.data.object as any
     const orderId = paymentIntent.metadata.orderId
 
     await prisma.order.update({
